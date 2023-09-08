@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -23,7 +22,7 @@ public class Place {
     @OneToOne
     private Address address;
     @OneToOne
-    private Amernity amernity;
+    private Amenity amernity;
     private String type;
     private String description;
     private Double price;

@@ -1,4 +1,4 @@
-package com.example.nguyenho.davisbnb.security;
+package com.example.nguyenho.davisbnb.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
