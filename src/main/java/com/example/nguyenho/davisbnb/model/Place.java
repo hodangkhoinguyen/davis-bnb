@@ -1,10 +1,8 @@
 package com.example.nguyenho.davisbnb.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
 
@@ -13,20 +11,21 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class Place {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    private String id;
+
     @ManyToOne
-    private User user;
-    @OneToOne
+    private User owner;
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-    @OneToOne
-    private Amenity amernity;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Amenity amenity;
     private String type;
     private String description;
     private Double price;
     @ElementCollection(targetClass = String.class)
     private List<String> photoList;
-
 }

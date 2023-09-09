@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @Builder
@@ -13,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RefreshToken {
     @Id
-    @GeneratedValue
-    private Long id;
+    @UuidGenerator
+    private String id;
 
     @Column(unique = true, nullable = false)
     private String token;

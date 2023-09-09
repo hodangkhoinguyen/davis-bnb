@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -15,8 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Review {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    private UUID id;
     @ManyToOne
     private User author;
     @ManyToOne

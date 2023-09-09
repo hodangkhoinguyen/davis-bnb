@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 
@@ -15,12 +16,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class Reservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    private String id;
     @ManyToOne
     private Place place;
-    @ManyToOne
-    private User host;
     @ManyToOne
     private User renter;
     private Date startDate;

@@ -1,13 +1,12 @@
 package com.example.nguyenho.davisbnb.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @Builder
@@ -16,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Amenity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    private String id;
     private Integer num_bedroom;
     private Integer num_bathroom;
     private boolean hasTV;

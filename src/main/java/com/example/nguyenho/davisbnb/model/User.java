@@ -1,10 +1,9 @@
 package com.example.nguyenho.davisbnb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,12 +18,17 @@ import java.util.Collection;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    private String id;
     private String email;
+    @JsonIgnore
     private String password;
     private String name;
     private String profileImageUrl;
+    @OneToMany
+    @JsonIgnore
+    private Collection<RefreshToken> refreshToken;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -56,8 +60,6 @@ public class User implements UserDetails {
         return true;
     }
 
-    @OneToMany(mappedBy = "user")
-    private Collection<RefreshToken> refreshToken;
 
     public Collection<RefreshToken> getRefreshToken() {
         return refreshToken;
