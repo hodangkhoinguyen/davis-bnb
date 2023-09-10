@@ -1,5 +1,6 @@
 package com.example.nguyenho.davisbnb.controller;
 
+import com.example.nguyenho.davisbnb.exception.NotFoundResourceException;
 import com.example.nguyenho.davisbnb.exception.UserNotAuthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,5 +12,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler({UserNotAuthorizedException.class})
     public ResponseEntity<?> handleUserNotFoundException(UserNotAuthorizedException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler({NotFoundResourceException.class})
+    public ResponseEntity<?> handleNotFoundResourceException(UserNotAuthorizedException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

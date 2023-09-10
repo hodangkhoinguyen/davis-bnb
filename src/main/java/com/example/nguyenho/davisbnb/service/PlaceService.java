@@ -1,5 +1,6 @@
 package com.example.nguyenho.davisbnb.service;
 
+import com.example.nguyenho.davisbnb.exception.NotFoundResourceException;
 import com.example.nguyenho.davisbnb.exception.UserNotAuthorizedException;
 import com.example.nguyenho.davisbnb.model.Place;
 import com.example.nguyenho.davisbnb.repository.PlaceRepository;
@@ -32,31 +33,34 @@ public class PlaceService {
         return placeRepository.findByOwnerId(userId);
     }
 
-    public Optional<Place> updatePlaceById(String placeId, Place updatePlace) {
+    public void updatePlaceById(String placeId, Place updatePlace) {
         Optional<Place> place = placeRepository.findById(placeId);
-        if (place.isPresent()) {
-            Place foundPlace = place.get();
-            if (!foundPlace.getOwner().getId().equals(authService.getCurrentUser().getId())) {
-                throw new UserNotAuthorizedException("Not authorize to update the place");
-            }
-            if (updatePlace.getType() != null) foundPlace.setType(updatePlace.getType());
-            if (updatePlace.getDescription() != null) foundPlace.setDescription(updatePlace.getDescription());
-            if (updatePlace.getPrice() != null) foundPlace.setPrice(updatePlace.getPrice());
-            placeRepository.save(updatePlace);
-            logger.info("Update place successfully");
+
+        if (place.isEmpty()) {
+            throw new NotFoundResourceException("Place ID is not found");
         }
-        return place;
+
+        Place foundPlace = place.get();
+        if (!foundPlace.getOwner().getId().equals(authService.getCurrentUser().getId())) {
+            throw new UserNotAuthorizedException("Not authorized to update the place");
+        }
+        if (updatePlace.getType() != null) foundPlace.setType(updatePlace.getType());
+        if (updatePlace.getDescription() != null) foundPlace.setDescription(updatePlace.getDescription());
+        if (updatePlace.getPrice() != null) foundPlace.setPrice(updatePlace.getPrice());
+        placeRepository.save(updatePlace);
+        logger.info("Update place successfully");
     }
 
-    public Optional<Place> deletePlaceById(String placeId) {
+    public void deletePlaceById(String placeId) {
         Optional<Place> place = placeRepository.findById(placeId);
-        if (place.isPresent()) {
-            if (!place.get().getOwner().getId().equals(authService.getCurrentUser().getId())) {
-                throw new UserNotAuthorizedException("Not authorize to delete the place");
-            }
-            placeRepository.deleteById(placeId);
-            logger.info("Delete place successfully");
+        if (place.isEmpty()) {
+            throw new NotFoundResourceException("Place ID is not found");
         }
-        return place;
+
+        if (!place.get().getOwner().getId().equals(authService.getCurrentUser().getId())) {
+            throw new UserNotAuthorizedException("Not authorized to delete the place");
+        }
+        placeRepository.deleteById(placeId);
+        logger.info("Delete place successfully");
     }
 }

@@ -1,7 +1,10 @@
 package com.example.nguyenho.davisbnb.controller;
 
+import com.example.nguyenho.davisbnb.model.Address;
+import com.example.nguyenho.davisbnb.model.Amenity;
 import com.example.nguyenho.davisbnb.model.Place;
 import com.example.nguyenho.davisbnb.payload.response.MessageResponse;
+import com.example.nguyenho.davisbnb.service.AddressService;
 import com.example.nguyenho.davisbnb.service.PlaceService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -18,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PlaceController {
     private final PlaceService placeService;
+    private final AddressService addressService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping("")
@@ -48,20 +52,26 @@ public class PlaceController {
     @PutMapping("/{placeId}")
     public ResponseEntity<?> updatePlaceById(@PathVariable String placeId, @RequestBody Place place) {
         logger.info("Update place by user");
-        Optional<Place> updatedPlace = placeService.updatePlaceById(placeId, place);
-        if (updatedPlace.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        placeService.updatePlaceById(placeId, place);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{placeId}")
     public ResponseEntity<Place> deletePlaceById(@PathVariable String placeId) {
         logger.info("Delete place by Id");
-        Optional<Place> deletedPlace = placeService.deletePlaceById(placeId);
-        if (deletedPlace.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        placeService.deletePlaceById(placeId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{placeId}/address/{addressId}")
+    public ResponseEntity<?> updateAddress(@PathVariable String placeId, @PathVariable String addressId, @RequestBody Address address) {
+        addressService.updateAddress(placeId, addressId, address);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{placeId}/amenity/{amenityId}")
+    public ResponseEntity<?> updateAmenity(@PathVariable String placeId, @PathVariable String amenityId, @RequestBody Amenity amenity) {
+        addressService.updateAmenity(placeId, amenityId, amenity);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
